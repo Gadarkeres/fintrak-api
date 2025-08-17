@@ -15,9 +15,10 @@ datasource db {
 
 model User {
   ID_USUARIO Int @id @default(autoincrement())
+  NM_USUARIO String
   CD_LOGIN String @unique
   CD_SENHA String
-  NR_SALDO Int
+  NR_SALDO Int  @default(0)
 
   @@map("USUARIO")
 }
