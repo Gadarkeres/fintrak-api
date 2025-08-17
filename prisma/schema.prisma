@@ -6,17 +6,18 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
-}
+ }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model USUARIO {
+model User {
   ID_USUARIO Int @id @default(autoincrement())
   CD_LOGIN String @unique
   CD_SENHA String
   NR_SALDO Int
+
+  @@map("USUARIO")
 }
