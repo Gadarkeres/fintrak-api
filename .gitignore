@@ -59,3 +59,5 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 docker-compose.yml
 docker-compose.yaml
 docker-compoose # caso tenha o nome errado antigo
+
+/generated/prisma

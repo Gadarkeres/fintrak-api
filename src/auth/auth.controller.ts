@@ -7,8 +7,7 @@ export class AuthController {
     constructor(private readonly authService: AuthService) {}
     @Post('/login')
     login(@Body() body: AuthDtoRequest): { token: string } {
-        console.log(body);
-        return { token: 'teste' };
+        return this.authService.login(body);
     }
 
     @Post('/register')
