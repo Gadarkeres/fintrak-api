@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthDtoLogin } from './dto/auth-dto-login';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDtoRegister } from './dto/auth-dto-register';
-import { userResponse } from './dto/auth-dto-response';
+import { userDtoResponse } from './dto/auth-dto-response';
 import * as bycrpt from 'bcryptjs';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class AuthService {
         return { token: '1234' };
     }
 
-    async register(body: AuthDtoRegister): Promise<userResponse> {
+    async register(body: AuthDtoRegister): Promise<userDtoResponse> {
         const userAlreadyExists = await this.prismaService.user.findUnique({
             where: {
                 CD_LOGIN: body.email,

@@ -2,7 +2,8 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { AuthDtoLogin } from './dto/auth-dto-login';
 import { AuthService } from './auth.service';
 import { AuthDtoRegister } from './dto/auth-dto-register';
-import { userResponse } from './dto/auth-dto-response';
+import { userDtoResponse } from './dto/auth-dto-response';
+import { ApiResponse } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -13,7 +14,8 @@ export class AuthController {
     }
 
     @Post('/register')
-    register(@Body() body: AuthDtoRegister): Promise<userResponse> {
+    @ApiResponse({ status: 201, type: userDtoResponse })
+    register(@Body() body: AuthDtoRegister): Promise<userDtoResponse> {
         return this.authService.register(body);
     }
 }
