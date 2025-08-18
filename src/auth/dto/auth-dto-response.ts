@@ -9,4 +9,6 @@ export class userDtoResponse {
     id: number;
     @ApiProperty()
     balance: number;
+    @ApiProperty()
+    isLoggedIn: boolean;
 }
