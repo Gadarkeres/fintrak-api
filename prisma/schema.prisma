@@ -19,6 +19,6 @@ model User {
   CD_LOGIN String @unique
   CD_SENHA String
   NR_SALDO Int  @default(0)
-
+  CREATED_AT DateTime @default(now())
   @@map("USUARIO")
 }

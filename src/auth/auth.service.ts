@@ -8,20 +8,33 @@ import { userDtoResponse } from './dto/auth-dto-response';
 @Injectable()
 export class AuthService {
     constructor(private readonly prismaService: PrismaService) {}
-    login(
+    async login(
         body: AuthDtoLogin,
     ): Promise<{ user: userDtoResponse; token: string }> {
-        console.log(body);
-        return Promise.resolve({
-            user: {
-                name: 'test',
-                email: 'test',
-                id: 1,
-                balance: 0,
-                isLoggedIn: true,
+        const user = await this.prismaService.user.findUnique({
+            where: {
+                CD_LOGIN: body.email,
             },
-            token: 'test',
         });
+        if (user) {
+            const isPasswordValid = await bycrpt.compare(
+                body.password,
+                user.CD_SENHA,
+            );
+            if (isPasswordValid) {
+                return {
+                    user: {
+                        name: user.NM_USUARIO,
+                        email: user.CD_LOGIN,
+                        id: user.ID_USUARIO,
+                        balance: user.NR_SALDO,
+                        isLoggedIn: true,
+                    },
+                    token: 'token',
+                };
+            }
+        }
+        throw new UnauthorizedException('Credenciais inválidas.');
     }
 
     async register(body: AuthDtoRegister): Promise<void> {
