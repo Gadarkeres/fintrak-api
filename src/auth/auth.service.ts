@@ -4,10 +4,14 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDtoRegister } from './dto/auth-dto-register';
 import * as bycrpt from 'bcryptjs';
 import { userDtoResponse } from './dto/auth-dto-response';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly prismaService: PrismaService) {}
+    constructor(
+        private readonly prismaService: PrismaService,
+        private readonly jwtService: JwtService,
+    ) {}
     async login(
         body: AuthDtoLogin,
     ): Promise<{ user: userDtoResponse; token: string }> {
@@ -22,6 +26,10 @@ export class AuthService {
                 user.CD_SENHA,
             );
             if (isPasswordValid) {
+                const acessToken = await this.jwtService.signAsync({
+                    id: user.ID_USUARIO,
+                    email: user.CD_LOGIN,
+                });
                 return {
                     user: {
                         name: user.NM_USUARIO,
@@ -30,7 +38,7 @@ export class AuthService {
                         balance: user.NR_SALDO,
                         isLoggedIn: true,
                     },
-                    token: 'token',
+                    token: acessToken,
                 };
             }
         }

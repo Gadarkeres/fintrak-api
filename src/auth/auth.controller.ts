@@ -1,9 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { AuthDtoLogin } from './dto/auth-dto-login';
 import { AuthDtoRegister } from './dto/auth-dto-register';
 import { userDtoResponse } from './dto/auth-dto-response';
+import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -19,5 +20,11 @@ export class AuthController {
     @ApiResponse({ status: 201 })
     register(@Body() body: AuthDtoRegister): Promise<void> {
         return this.authService.register(body);
+    }
+
+    @UseGuards(AuthGuard)
+    @Get('me')
+    async me(@Request() request) {
+        return request.user;
     }
 }
